@@ -1,10 +1,12 @@
-//simple hello world
 
 #include <stdio.h>
 
+
+
+
 int main(void)
 {
-printf("To C or not to C: That is the question.\n");
-return 0;
+    Mat a = {};
 
+    return 0;
 }
