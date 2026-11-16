@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Build artifacts
+*.o
+*.out
+*.exe
+*.dSYM/
+a.out
+matmul
