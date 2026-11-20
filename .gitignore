@@ -7,4 +7,4 @@
 *.exe
 *.dSYM/
 a.out
-mat_man
+main
