@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <stdlib.h>
 
 // Matrix stored row-major in a flat array: element (i, j) is data[i * cols + j].
 // Mat doesn't own its data, so copying a Mat still points at the same numbers.
@@ -91,7 +92,6 @@ void mat_sub(Mat c, Mat a, Mat b) {
     }
 }
 
-void mat_alloc 
 // c = a * b. Output comes first, like memcpy(dst, src).
 // Requires a.cols == b.rows, and c sized a.rows x b.cols with its own storage.
 void mat_mul(Mat c, Mat a, Mat b) {
@@ -110,8 +110,28 @@ void mat_mul(Mat c, Mat a, Mat b) {
     }
 }
 
+Mat mat_alloc(size_t rows, size_t cols) {
+    Mat m;
+    m.rows = rows;
+    m.cols = cols;
+    m.data = malloc(rows * cols * sizeof(float));
+    assert(m.data != NULL);
+    return m; 
+}
+
+void mat_free(Mat m) {
+    free(m.data);
+}
 
 
+void mat_identity(Mat m) {
+    assert(m.rows == m.cols);
+
+    mat_fill(m, 0.0f);
+    for (size_t i = 0; i < m.rows; ++i) {
+        MAT_AT(m, i, i) = 1.0f;
+    }
+}
 int main(void)
 {
     // Compound literals give each matrix storage that lives until main returns.
@@ -162,6 +182,12 @@ int main(void)
     // Passing a Mat copies the whole struct; a pointer would only copy 8 bytes.
     printf("size of Mat pointer: %zu\n", sizeof (Mat *));
     printf("size of Mat         :%zu\n", sizeof (Mat ));
+
+    size_t n = 3;
+    Mat id = mat_alloc(n, n);
+    mat_identity(id);
+    mat_print(id);
+    mat_free(id);
 
     return 0;
 }
